@@ -47,7 +47,7 @@ The **Student Management System & Task Manager** is a production-ready, full-sta
 
 ```mermaid
 flowchart TD
-    Client["Client Browser (HTML5 / Vanilla CSS3 / Modern JS)"]
+    Client["Client Browser: HTML5 / Vanilla CSS3 / Modern JS"]
     
     subgraph ExpressBackend ["Express.js Web Server (Port 3000)"]
         Static["Static File Server (public/)"]
@@ -61,12 +61,12 @@ flowchart TD
         LocalJSON[("Embedded Resilient Store (data/db.json)")]
     end
 
-    Client -->|HTTP GET /| Static
-    Client -->|REST API Requests (Fetch / JSON)| Router
+    Client -->|"HTTP GET /"| Static
+    Client -->|"REST API Requests (Fetch / JSON)"| Router
     Router --> Validation
     Validation --> DBHandler
-    DBHandler -->|Primary Connection (Pool)| MySQL
-    DBHandler -.->|Fallback (If MySQL Offline)| LocalJSON
+    DBHandler -->|"Primary Connection (Pool)"| MySQL
+    DBHandler -.->|"Fallback (If MySQL Offline)"| LocalJSON
 ```
 
 ---
