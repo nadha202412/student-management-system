@@ -1,269 +1,412 @@
-# 🎓 Student Management System & Task Manager
+Student Management System and Task Manager
 
-[![Node.js Version](https://img.shields.io/badge/Node.js-v18%2B%20%7C%20v22-green.svg?logo=nodedotjs)](https://nodejs.org/)
-[![Express.js](https://img.shields.io/badge/Express.js-4.21.x-blue.svg?logo=express)](https://expressjs.com/)
-[![MySQL2](https://img.shields.io/badge/Database-MySQL2-orange.svg?logo=mysql)](https://www.mysql.com/)
-[![Vercel Deployment](https://img.shields.io/badge/Deployed-Vercel-black.svg?logo=vercel)](https://vercel.com/)
-[![Frontend](https://img.shields.io/badge/Frontend-HTML5%20%7C%20Vanilla%20CSS3%20%7C%20ES6+-yellow.svg)](https://developer.mozilla.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-purple.svg)](LICENSE)
+A Full-Stack Web Application for Student Records and Academic Task Management 
 
-> **Sri Sai Ram Engineering College, Chennai - 600 044**  
-> *Laboratory Project: Full-Stack Web Application (Node.js + Express + MySQL)*  
-> *Motto: Manage • Track • Build Future*  
-> 🚀 **Live Demo on Vercel**: Ready for 1-click deployment and preview!
+Table of Contents
 
----
-
-## 📋 Table of Contents
-1. [Project Overview](#-project-overview)
-2. [System Architecture](#-system-architecture)
-3. [Folder Structure](#-folder-structure)
-4. [Database Design & Schema](#-database-design--schema)
-5. [Prerequisites & Installation](#-prerequisites--installation)
-6. [Configuration (.env)](#-configuration-env)
-7. [Running the Application](#-running-the-application)
-8. [Dual-Engine Database Resilience](#-dual-engine-database-resilience)
-9. [REST API Documentation](#-rest-api-documentation)
-10. [Frontend User Interface & Features](#-frontend-user-interface--features)
-11. [Laboratory Viva Voce Q&A](#-laboratory-viva-voce-qa)
-12. [Author & Acknowledgments](#-author--acknowledgments)
+1. "Project Overview" (#project-overview)
+2. "Objectives" (#objectives)
+3. "Key Features" (#key-features)
+4. "Technology Stack" (#technology-stack)
+5. "System Architecture" (#system-architecture)
+6. "Project Structure" (#project-structure)
+7. "Database Design" (#database-design)
+8. "Prerequisites" (#prerequisites)
+9. "Installation and Setup" (#installation-and-setup)
+10. "Environment Configuration" (#environment-configuration)
+11. "Running the Application" (#running-the-application)
+12. "Database Resilience" (#database-resilience)
+13. "REST API Documentation" (#rest-api-documentation)
+14. "User Interface and Functionality" (#user-interface-and-functionality)
+15. "Security and Data Integrity" (#security-and-data-integrity)
+16. "Deployment" (#deployment)
+17. "Laboratory Viva Questions" (#laboratory-viva-questions)
+18. "Future Enhancements" (#future-enhancements)
+19. "Author" (#author)
+20. "License" (#license)
 
 ---
 
-## 🌟 Project Overview
+Project Overview
 
-The **Student Management System & Task Manager** is a production-ready, full-stack web application developed according to academic laboratory curriculum requirements. It connects a responsive frontend interface with a Node.js/Express backend and a MySQL relational database.
+The Student Management System and Task Manager is a full-stack web application designed to simplify student record management and academic task tracking within an educational environment.
 
-### Key Highlights
-- **Lab Output Fidelity**: Faithfully recreates and elevates the college lab manual layout, featuring the **"Add New Student"** card with modern iconography, tailored typography (Inter & Outfit), and responsive layout.
-- **Full CRUD Support**: Complete Create, Read, Update, and Delete operations for student registrations and academic tasks.
-- **Student Task Management**: Assign lab assignments, project milestones, and homework tasks with priority chips (`High`, `Medium`, `Low`), due dates, and real-time status transitions (`Pending` ➔ `In Progress` ➔ `Completed`).
-- **Interactive Directory**: Search by name, email, or department, with live department filter pills and record count badges.
-- **Dual-Engine Database Resilience**: Connects to MySQL when available; automatically activates an embedded local database engine if MySQL is offline or undergoing maintenance, ensuring zero crashes during presentations!
+The application provides a centralized interface for registering students, maintaining academic records, organizing assignments, monitoring task progress, and managing submission deadlines. It integrates a responsive frontend with a Node.js and Express.js backend, supported by a MySQL relational database and a local JSON-based fallback storage mechanism.
 
----
+The system demonstrates the practical application of full-stack web development concepts, RESTful API design, relational database management, client-server communication, CRUD operations, and deployment-oriented application configuration.
 
-## 🏗️ System Architecture
+Objectives
 
-```mermaid
-flowchart TD
-    Client["Client Browser: HTML5 / Vanilla CSS3 / Modern JS"]
-    
-    subgraph ExpressBackend ["Express.js Web Server (Port 3000)"]
-        Static["Static File Server (public/)"]
-        Router["REST API Router (/api/*)"]
-        Validation["Input Validation & Sanitization"]
-        DBHandler["Dual-Engine Database Controller"]
-    end
-    
-    subgraph DatabaseLayer ["Data Persistence Layer"]
-        MySQL[("MySQL 8.0 Relational DB (student_db)")]
-        LocalJSON[("Embedded Resilient Store (data/db.json)")]
-    end
+- Develop a centralized system for managing student information.
+- Implement Create, Read, Update, and Delete operations for student records and academic tasks.
+- Provide task prioritization and deadline tracking.
+- Enable student directory search and department-based filtering.
+- Design a responsive and user-friendly interface.
+- Integrate a relational database for structured data storage.
+- Implement a fallback storage mechanism for improved availability during local demonstrations.
+- Apply modular development practices and REST API principles.
 
-    Client -->|"HTTP GET /"| Static
-    Client -->|"REST API Requests (Fetch / JSON)"| Router
-    Router --> Validation
-    Validation --> DBHandler
-    DBHandler -->|"Primary Connection (Pool)"| MySQL
-    DBHandler -.->|"Fallback (If MySQL Offline)"| LocalJSON
-```
+Key Features
 
----
+Student Record Management
 
-## 📁 Folder Structure
+- Register students with name, email, and department details.
+- Retrieve individual student records and the complete student directory.
+- Update existing student information.
+- Delete student records with associated task cleanup.
+- Validate required fields and prevent duplicate email registrations.
 
-```text
-webforme/
-│
-├── server.js               # Main Express.js backend server & REST API routes
-├── database.sql            # Full MySQL database schema & sample seed data
-├── package.json            # NPM project manifest & dependencies
-├── .env.example            # Environment variables configuration template
-├── .gitignore              # Git ignore rules for node_modules and .env
-├── README.md               # Detailed technical documentation and guide
-│
-├── task-manager/           # College lab folder alias linking directly to server
-│   ├── server.js -> ../server.js
-│   ├── public -> ../public
-│   └── database.sql -> ../database.sql
-│
-├── public/                 # Frontend client assets
-│   ├── index.html          # Semantic HTML5 single-page application
-│   ├── css/
-│   │   └── style.css       # Custom Vanilla CSS design system & micro-animations
-│   └── js/
-│       └── app.js          # Reactive client logic, API fetch calls, and modal handlers
-│
-└── data/                   # Embedded fallback storage directory (auto-generated)
-    └── db.json             # Local JSON persistence store
-```
+Academic Task Management
 
----
+- Create and manage assignments, laboratory exercises, and project milestones.
+- Associate tasks with individual students.
+- Set due dates and priority levels.
+- Categorize tasks as Pending, In Progress, or Completed.
+- Update task status through the application interface.
+- Delete tasks when they are no longer required.
 
-## 🗄️ Database Design & Schema
+Search and Filtering
 
-The relational database is named **`student_db`** and comprises two normalized tables:
+- Search student records by name, email, or department.
+- Filter students using department selections.
+- Filter tasks by their current status.
+- Display student, task, and department statistics.
 
-### 1. `students` Table
-| Column | Data Type | Constraints | Description |
-| :--- | :--- | :--- | :--- |
-| `id` | `INT` | `PRIMARY KEY, AUTO_INCREMENT` | Unique student identifier |
-| `name` | `VARCHAR(100)` | `NOT NULL` | Full student name |
-| `email` | `VARCHAR(100)` | `NOT NULL, UNIQUE` | Unique student email |
-| `department` | `VARCHAR(100)` | `NOT NULL` | Enrolled academic department |
-| `created_at` | `TIMESTAMP` | `DEFAULT CURRENT_TIMESTAMP` | Registration timestamp |
-| `updated_at` | `TIMESTAMP` | `DEFAULT CURRENT_TIMESTAMP ON UPDATE` | Last modification date |
+Database Resilience
 
-### 2. `tasks` Table
-| Column | Data Type | Constraints | Description |
-| :--- | :--- | :--- | :--- |
-| `id` | `INT` | `PRIMARY KEY, AUTO_INCREMENT` | Unique task identifier |
-| `student_id` | `INT` | `FOREIGN KEY (students.id) ON DELETE CASCADE` | Assigned student |
-| `title` | `VARCHAR(200)` | `NOT NULL` | Task or assignment title |
-| `description` | `TEXT` | `NULLABLE` | Detailed instructions / notes |
-| `due_date` | `DATE` | `NULLABLE` | Submission deadline |
-| `priority` | `ENUM` | `'Low', 'Medium', 'High'` | Priority urgency |
-| `status` | `ENUM` | `'Pending', 'In Progress', 'Completed'` | Workflow progress status |
-| `created_at` | `TIMESTAMP` | `DEFAULT CURRENT_TIMESTAMP` | Creation timestamp |
+- Connect to MySQL using a connection pool.
+- Support a local JSON-based storage fallback when the application is configured to use it and the MySQL connection is unavailable.
+- Display database connection status and application statistics.
+- Reduce dependency on a continuously available MySQL server during local demonstrations.
 
-### Entity-Relationship Diagram
+User Interface
 
-```mermaid
-erDiagram
-    STUDENTS ||--o{ TASKS : "is assigned"
-    STUDENTS {
-        int id PK
-        string name
-        string email UK
-        string department
-        timestamp created_at
-    }
-    TASKS {
-        int id PK
-        int student_id FK
-        string title
-        string description
-        date due_date
-        enum priority
-        enum status
-        timestamp created_at
-    }
-```
+- Responsive layout for different screen sizes.
+- Student registration form with input validation.
+- Student directory with initials-based avatars.
+- Edit and delete interfaces for student records.
+- Task management board with status and priority indicators.
+- Loading states, confirmation prompts, and interactive feedback.
 
----
+Technology Stack
 
-## 💻 Prerequisites & Installation
+Technology| Purpose
+HTML5| Application structure and semantic markup
+CSS3| Responsive styling, layouts, and animations
+JavaScript| Frontend interaction and API communication
+Node.js| Server-side JavaScript runtime
+Express.js| Backend framework and REST API routing
+MySQL| Relational database management
+mysql2| MySQL connectivity, prepared statements, and connection pooling
+JSON| Local fallback data persistence
+dotenv| Environment variable configuration
+CORS| Cross-origin request configuration
+npm| Dependency and script management
+Vercel| Deployment platform
 
-### 1. Prerequisites
-- **Node.js** (v18.x or v20.x or v22.x) and **npm** installed. Check with:
-  ```bash
-  node -v
-  npm -v
-  ```
-- **MySQL Server** (Optional for live MySQL mode; otherwise the app uses the built-in fallback automatically).
+System Architecture
 
-### 2. Clone the Repository
-```bash
-git clone git@github.com:tamilsabari397-dev/student-management-system.git
+The application follows a client-server architecture with a frontend, backend API, and persistence layer.
+
++----------------------------------+
+|          User Interface          |
+|       HTML, CSS, JavaScript      |
++----------------+-----------------+
+                 |
+                 | HTTP Requests
+                 v
++----------------------------------+
+|          Express.js API          |
+|       Node.js Application        |
+|                                  |
+| Validation, Routing and Logic    |
++----------------+-----------------+
+                 |
+                 v
++----------------------------------+
+|         Database Layer           |
+|                                  |
+|       MySQL Database             |
+|               or                 |
+|       JSON Fallback Storage      |
++----------------------------------+
+
+Request Processing Flow
+
+1. The user interacts with the frontend.
+2. JavaScript sends an HTTP request to the Express.js API.
+3. The backend validates the request and executes the required operation.
+4. The configured persistence layer processes the data operation.
+5. The server returns a JSON response with the result.
+6. The frontend updates the interface based on the response.
+
+Project Structure
+
+student-management-system/
+|
+|-- server.js
+|-- database.sql
+|-- package.json
+|-- package-lock.json
+|-- .env.example
+|-- .gitignore
+|-- README.md
+|
+|-- task-manager/
+|   |-- server.js
+|   |-- public/
+|   |-- database.sql
+|
+|-- public/
+|   |-- index.html
+|   |-- css/
+|   |   |-- style.css
+|   |
+|   |-- js/
+|       |-- app.js
+|
+|-- data/
+|   |-- db.json
+|
+
+Note: The "task-manager" directory contains aliases or linked resources according to the supplied project structure. The "data/db.json" file may be generated when the fallback storage mechanism is initialized.
+
+Database Design
+
+The MySQL database is named "student_db" and contains two primary tables: "students" and "tasks".
+
+1. Students Table
+
+Column| Data Type| Description
+id| INT| Primary key and unique student identifier
+name| VARCHAR(100)| Student's full name
+email| VARCHAR(100)| Unique student email address
+department| VARCHAR(100)| Academic department
+created_at| TIMESTAMP| Record creation timestamp
+updated_at| TIMESTAMP| Last modification timestamp
+
+Constraints:
+
+- "id" is the primary key with auto-increment.
+- "name", "email", and "department" are required.
+- "email" has a unique constraint.
+
+2. Tasks Table
+
+Column| Data Type| Description
+id| INT| Primary key and unique task identifier
+student_id| INT| Reference to the associated student
+title| VARCHAR(200)| Task or assignment title
+description| TEXT| Additional task information
+due_date| DATE| Submission deadline
+priority| ENUM| Low, Medium, or High
+status| ENUM| Pending, In Progress, or Completed
+created_at| TIMESTAMP| Task creation timestamp
+
+Constraints:
+
+- "id" is the primary key with auto-increment.
+- "student_id" references "students.id".
+- The foreign key uses "ON DELETE CASCADE" to remove associated tasks when a student is deleted, provided the operation uses the configured MySQL relationship.
+
+Entity Relationship
+
++-------------------+
+|      students     |
++-------------------+
+| PK id             |
+|    name           |
+|    email          |
+|    department     |
+|    created_at     |
+|    updated_at     |
++---------+---------+
+          |
+          | One-to-Many
+          |
++---------v---------+
+|       tasks       |
++-------------------+
+| PK id             |
+| FK student_id     |
+|    title          |
+|    description    |
+|    due_date       |
+|    priority       |
+|    status         |
+|    created_at     |
++-------------------+
+
+One student can have multiple tasks, while each task is associated with a student.
+
+Prerequisites
+
+Install the following software before running the application:
+
+- Node.js 18.x, 20.x, or 22.x, subject to dependency compatibility.
+- npm, which is distributed with Node.js.
+- MySQL Server for relational database mode.
+- A code editor such as Visual Studio Code.
+- A modern web browser.
+
+MySQL is optional only if the application's JSON fallback is implemented and configured correctly.
+
+Verify the Node.js and npm installations:
+
+node -v
+npm -v
+
+Installation and Setup
+
+Step 1: Clone the Repository
+
+git clone https://github.com/tamilsabari397-dev/student-management-system.git
+
+Navigate to the project directory:
+
 cd student-management-system
-```
 
-### 3. Install Dependencies
-Run the installation command inside the project directory:
-```bash
+If SSH access is configured for your GitHub account, you can also use the repository's SSH URL.
+
+Step 2: Install Dependencies
+
 npm install
-```
-Installed packages:
-- `express` — Fast, unopinionated web framework for Node.js
-- `mysql2` — High-performance MySQL client supporting Promises and Connection Pooling
-- `dotenv` — Environment variable loader
-- `cors` — Cross-Origin Resource Sharing middleware
 
----
+The primary dependencies include:
 
-## ⚙️ Configuration (.env)
+- "express" for backend routing and middleware.
+- "mysql2" for MySQL database operations.
+- "dotenv" for environment configuration.
+- "cors" for cross-origin resource sharing.
 
-Create a `.env` file from `.env.example`:
-```bash
+Step 3: Configure Environment Variables
+
+Create a local ".env" file using the supplied template.
+
+On Windows Command Prompt:
+
+copy .env.example .env
+
+On macOS or Linux:
+
 cp .env.example .env
-```
 
-Configure your local MySQL credentials:
-```env
-# Server Configuration
+Update the values according to your local environment.
+
+Environment Configuration
+
+Example ".env" configuration:
+
 PORT=3000
 
-# MySQL Database Configuration
 DB_HOST=localhost
 DB_USER=root
 DB_PASSWORD=YOUR_MYSQL_PASSWORD
 DB_NAME=student_db
 DB_PORT=3306
-```
 
----
+Replace "YOUR_MYSQL_PASSWORD" with your local MySQL password.
 
-## 🚀 Running the Application
+Keep ".env" out of version control. Commit ".env.example" with placeholder values instead of actual credentials.
 
-### 1. (Optional) Initialize MySQL Database
-If running a local MySQL server, initialize the schema:
-```bash
+Running the Application
+
+Step 1: Initialize the Database
+
+If MySQL is installed and running, execute:
+
 mysql -u root -p < database.sql
-```
-*(Note: If you run `server.js` directly with MySQL running, the server will also automatically create the database and tables if they don't already exist!)*
 
-### 2. Start the Backend Server
-```bash
+Enter the MySQL password when prompted.
+
+The supplied backend may also initialize the database and tables automatically, depending on its implementation and database permissions.
+
+Step 2: Start the Backend
+
+Run the application using:
+
 npm start
-```
-Or for development with automatic restarts on file changes:
-```bash
+
+For development, if the project defines a "dev" script:
+
 npm run dev
-```
 
-### 3. Open in Browser
-Visit in your web browser:
-```text
+Step 3: Open the Application
+
+Open the following URL in your browser:
+
 http://localhost:3000
-```
 
----
+The application should display the student management interface if the server starts successfully and the frontend static files are configured correctly.
 
-## 🛡️ Dual-Engine Database Resilience
+Database Resilience
 
-A unique engineering feature of this codebase is **Zero-Crash Graceful Degradation**:
-1. When MySQL server is running on `localhost:3306`, `server.js` connects via a connection pool (`mysql2/promise`) and initializes tables.
-2. If MySQL is not installed, offline, or passwords don't match, `server.js` **does not crash**. Instead, it logs an informative message and seamlessly switches to an embedded local JSON persistence engine (`data/db.json`).
-3. This guarantees that evaluators, teammates, and recruiters can immediately view and interact with the application without complex database troubleshooting!
+The application is designed to support MySQL persistence and a JSON-based fallback mechanism.
 
----
+MySQL Mode
 
-## 📡 REST API Documentation
+When the MySQL server is available and the connection settings are valid, the application can use a MySQL connection pool to perform database operations.
 
-### Student Endpoints
+JSON Fallback Mode
 
-| Method | Endpoint | Description | Request Body / Query Params |
-| :--- | :--- | :--- | :--- |
-| `GET` | `/api/status` | Server and DB health status | None |
-| `GET` | `/api/stats` | Aggregate metrics (students, tasks, departments) | None |
-| `GET` | `/api/students` | Get all students | `?search=term&department=DeptName` |
-| `GET` | `/api/students/:id` | Get single student details | None |
-| `POST` | `/api/students` | Register a new student | `{"name":"Nandha", "email":"nandha@example.com", "department":"Information Technology"}` |
-| `PUT` | `/api/students/:id` | Update student details | `{"name":"...", "email":"...", "department":"..."}` |
-| `DELETE` | `/api/students/:id`| Delete student & associated tasks | None |
+When MySQL is unavailable, the backend may use the local JSON storage engine implemented in the project.
 
-### Task Endpoints
+This approach can simplify local demonstrations and reduce setup requirements. However, the fallback's availability depends on the actual error-handling and storage implementation.
 
-| Method | Endpoint | Description | Request Body / Query Params |
-| :--- | :--- | :--- | :--- |
-| `GET` | `/api/tasks` | Get all tasks | `?status=Pending&student_id=1` |
-| `POST` | `/api/tasks` | Create a new student task | `{"student_id":1, "title":"Lab 4", "due_date":"2026-11-05", "priority":"High"}` |
-| `PATCH` | `/api/tasks/:id/status`| Update status | `{"status":"Completed"}` |
-| `DELETE` | `/api/tasks/:id` | Delete task | None |
+The JSON fallback is not a replacement for a production-grade relational database in a multi-instance deployment. Local file persistence may not be durable or shared across serverless deployments.
 
-#### Sample Success Response (`POST /api/students`):
-```json
+REST API Documentation
+
+The backend exposes REST endpoints for student records, academic tasks, and system statistics.
+
+Student Endpoints
+
+Method| Endpoint| Description
+GET| "/api/status"| Retrieve server and database status
+GET| "/api/stats"| Retrieve student, task, and department statistics
+GET| "/api/students"| Retrieve student records
+GET| "/api/students/:id"| Retrieve a student by ID
+POST| "/api/students"| Register a student
+PUT| "/api/students/:id"| Update student details
+DELETE| "/api/students/:id"| Delete a student and associated tasks
+
+Supported student directory query parameters:
+
+/api/students?search=arun
+/api/students?department=Information%20Technology
+
+These can also be combined if supported by the backend.
+
+Task Endpoints
+
+Method| Endpoint| Description
+GET| "/api/tasks"| Retrieve task records
+POST| "/api/tasks"| Create an academic task
+PATCH| "/api/tasks/:id/status"| Update a task's status
+DELETE| "/api/tasks/:id"| Delete a task
+
+Example task filters:
+
+/api/tasks?status=Pending
+/api/tasks?student_id=1
+
+Example: Register a Student
+
+Request:
+
+POST /api/students
+Content-Type: application/json
+
+Request body:
+
+{
+  "name": "Nandha",
+  "email": "nandha@example.com",
+  "department": "Information Technology"
+}
+
+Example success response:
+
 {
   "message": "Student registered successfully",
   "student": {
@@ -274,52 +417,186 @@ A unique engineering feature of this codebase is **Zero-Crash Graceful Degradati
     "created_at": "2026-10-26T04:38:53.684Z"
   }
 }
-```
 
----
+The actual response fields and HTTP status codes depend on the backend implementation.
 
-## 🖥️ Frontend User Interface & Features
+Example: Create a Task
 
-1. **Academic Branding**: Includes college identification (*Sri Sai Ram Engineering College*) and official lab motto (*Manage • Track • Build Future*).
-2. **Registration Card**:
-   - Matches the lab manual layout with an accent bar and user-plus icon.
-   - Real-time client-side input validation for student name, email format, and department selection.
-   - Interactive button with loading spinner state and micro-animation feedback.
-3. **Registered Students Directory**:
-   - Filter by department dropdown (*IT, CSE, AI&DS, ECE, Mechanical, EEE, Civil*).
-   - Instant search bar with clear button.
-   - Initials avatar badges with department color accents.
-   - Edit modal and delete confirmation prompt.
-4. **Task Management Board**:
-   - Kanban-style grid with status pills (*All, Pending, In Progress, Completed*).
-   - Priority badges with color coding.
-   - Inline status dropdown for one-click progress updates.
-5. **Insights & System Overview**:
-   - Displays live database connection mode, system metrics, and architectural breakdown.
+Request body:
 
----
+{
+  "student_id": 1,
+  "title": "Laboratory Assignment",
+  "description": "Complete the assigned programming exercises.",
+  "due_date": "2026-11-05",
+  "priority": "High",
+  "status": "Pending"
+}
 
-## 🎓 Laboratory Viva Voce Q&A
+Example: Update Task Status
 
-**Q1: What is the purpose of `express.json()` and `express.urlencoded()`?**  
-*Answer*: They are built-in Express middleware that parse incoming request payloads formatted as JSON or URL-encoded form data into `req.body`.
+Request:
 
-**Q2: Why use `mysql2/promise` over the traditional `mysql` package?**  
-*Answer*: `mysql2` is significantly faster, supports prepared statements (mitigating SQL Injection), and provides native Promise-based APIs (`async/await`) along with resilient Connection Pooling.
+PATCH /api/tasks/1/status
+Content-Type: application/json
 
-**Q3: What is the benefit of `ON DELETE CASCADE` in the `tasks` table?**  
-*Answer*: When a student record is removed from the `students` table, `ON DELETE CASCADE` ensures that all associated task records referencing that student ID are automatically cleaned up, maintaining referential integrity.
+Request body:
 
-**Q4: How does the application handle duplicate email registrations?**  
-*Answer*: The `email` column in MySQL enforces a `UNIQUE` constraint. Both backend and frontend validate this condition, returning `HTTP 409 Conflict` if a duplicate email is submitted.
+{
+  "status": "Completed"
+}
 
----
+Common HTTP Status Codes
 
-## 👨‍💻 Author & Acknowledgments
+Status Code| Meaning
+200| Request completed successfully
+201| Resource created successfully
+400| Invalid request data
+404| Requested resource not found
+409| Duplicate or conflicting data
+500| Internal server error
 
-- **Developer**: nandha ([@nandha397-dev](https://github.com/tamilsabari397-dev))
-- **Institution**: Sri Sai Ram Engineering College, Chennai - 600 044
-- **Department**: Department of Information Technology
+These status codes represent recommended API conventions; verify the actual codes returned by the implementation.
 
----
-*Developed with ❤️ for Academic Excellence & Modern Web Engineering.*
+User Interface and Functionality
+
+Student Registration
+
+The registration interface provides fields for student name, email address, and department. Client-side validation helps users identify missing or invalid input before submission.
+
+Student Directory
+
+The directory displays registered student information and supports search, department filtering, record editing, and deletion.
+
+Task Management Board
+
+The task board organizes academic tasks by status and displays priority levels and due dates. Users can update task progress and remove tasks through the available controls.
+
+System Overview
+
+The dashboard displays application statistics and database connection information where supported by the backend.
+
+Responsive Design
+
+The interface uses HTML5, CSS3, and JavaScript to provide an interactive experience across supported desktop and mobile screen sizes.
+
+Security and Data Integrity
+
+The project incorporates or is intended to demonstrate the following practices:
+
+- Required-field and email-format validation.
+- Unique email constraints at the database level.
+- Foreign key relationships for task ownership.
+- Parameterized database queries where implemented.
+- Environment variables for sensitive database configuration.
+- Appropriate HTTP response codes for API operations.
+- Controlled handling of invalid requests and database errors.
+
+Client-side validation alone is not sufficient for security. All important validation and authorization checks should also be enforced on the backend.
+
+The current feature set should not be interpreted as a complete production security audit.
+
+Deployment
+
+The application is intended to be deployable through Vercel, subject to the project's server configuration and persistence requirements.
+
+Deployment Preparation
+
+1. Push the project to a GitHub repository.
+2. Import the repository into Vercel.
+3. Configure the required environment variables.
+4. Verify the build and server entry-point configuration.
+5. Configure a hosted MySQL database if relational persistence is required.
+6. Test student registration, task creation, updates, and deletion on the deployed URL.
+
+Important Deployment Consideration
+
+Vercel serverless functions do not provide a reliable persistent local filesystem for application data. Therefore, "data/db.json" should not be relied on for durable storage in a serverless production deployment.
+
+For deployment, use a supported hosted database and verify that the backend is compatible with Vercel's execution model. A conventional long-running Express server may require additional configuration or a different hosting platform.
+
+Live Demo: Add your verified deployment URL here after deployment.
+
+GitHub Repository: https://github.com/tamilsabari397-dev/student-management-system
+
+Laboratory Viva Questions
+
+Q1. What is the purpose of "express.json()" and "express.urlencoded()"?
+
+"express.json()" parses incoming JSON request bodies, while "express.urlencoded()" parses URL-encoded form submissions. The parsed data is made available through "req.body".
+
+Q2. Why is Express.js used in this project?
+
+Express.js simplifies backend development by providing routing, middleware support, request handling, and REST API implementation.
+
+Q3. Why is "mysql2" used?
+
+The "mysql2" package provides MySQL connectivity, support for prepared statements, Promise-based APIs, and connection pooling.
+
+Q4. What is CRUD?
+
+CRUD stands for Create, Read, Update, and Delete. These are the four fundamental operations used to manage application records.
+
+Q5. What is the purpose of a primary key?
+
+A primary key uniquely identifies each record in a database table and prevents duplicate identifiers.
+
+Q6. What is the purpose of a foreign key?
+
+A foreign key establishes a relationship between tables and helps maintain referential integrity.
+
+Q7. What is "ON DELETE CASCADE"?
+
+It automatically deletes related child records when the referenced parent record is deleted, provided the database relationship and deletion operation enforce that constraint.
+
+Q8. How does the application prevent duplicate email registrations?
+
+A unique constraint on the email column prevents duplicate email values in MySQL. Backend validation can additionally return an appropriate conflict response.
+
+Q9. What is a REST API?
+
+A REST API allows clients and servers to exchange data through HTTP methods and resource-oriented endpoints.
+
+Q10. Why are environment variables used?
+
+Environment variables separate configuration from source code and help prevent credentials from being hard-coded into the repository.
+
+Q11. Why is JSON fallback storage used?
+
+It provides a lightweight alternative for local demonstrations when MySQL is unavailable, provided the fallback implementation is configured correctly.
+
+Q12. What challenges can arise when deploying this application?
+
+Common challenges include environment configuration, database connectivity, CORS settings, serverless execution constraints, persistent storage, and production error handling.
+
+Future Enhancements
+
+Potential improvements include:
+
+- Role-based access control for administrators, faculty, and students.
+- Authentication and secure session management.
+- Student profile pages and academic performance tracking.
+- Email notifications for upcoming assignment deadlines.
+- File attachments for assignment submissions.
+- Pagination and server-side filtering for large datasets.
+- Automated testing for API endpoints.
+- API documentation using Swagger or OpenAPI.
+- Docker-based development and deployment.
+- Continuous integration and automated deployment.
+- Centralized logging and application monitoring.
+- Integration with a persistent managed database for production use.
+
+Author
+
+Developer: NandhaKumar K
+GitHub: "@nandha397-dev" (https://github.com/tamilsabari397-dev)
+Institution: Sri Sai Ram Engineering College, Chennai, Tamil Nadu
+Department: Information Technology
+
+This project was developed as part of an academic laboratory exercise to demonstrate practical knowledge of full-stack web development, backend API design, relational database integration, and application deployment.
+
+License
+
+This project is licensed under the MIT License.
+
+Refer to the "LICENSE" file in the repository for the complete license terms.
