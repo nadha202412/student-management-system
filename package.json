@@ -1,0 +1,27 @@
+{
+  "name": "student-management-system",
+  "version": "1.0.0",
+  "description": "Full-stack Student Management System & Task Manager developed with Node.js, Express, MySQL2, HTML5, Vanilla CSS3, and JavaScript.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "keywords": [
+    "student-management-system",
+    "nodejs",
+    "express",
+    "mysql",
+    "mysql2",
+    "task-manager",
+    "sairam-engineering-college"
+  ],
+  "author": "tamilsabari397-dev",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.2",
+    "mysql2": "^3.12.0"
+  }
+}

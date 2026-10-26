@@ -1,0 +1,84 @@
+{
+  "students": [
+    {
+      "id": 1,
+      "name": "Nandha",
+      "email": "nandha@example.com",
+      "department": "Information Technology",
+      "created_at": "2026-10-20T10:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "name": "Priya Sharma",
+      "email": "priya.s@example.com",
+      "department": "Computer Science & Engineering",
+      "created_at": "2026-10-21T11:30:00.000Z"
+    },
+    {
+      "id": 3,
+      "name": "Karthik Raja",
+      "email": "karthik.r@example.com",
+      "department": "Artificial Intelligence & Data Science",
+      "created_at": "2026-10-22T09:15:00.000Z"
+    },
+    {
+      "id": 4,
+      "name": "Ananya Venkat",
+      "email": "ananya.v@example.com",
+      "department": "Electronics & Communication Engineering",
+      "created_at": "2026-10-23T14:45:00.000Z"
+    }
+  ],
+  "tasks": [
+    {
+      "id": 1,
+      "student_id": 1,
+      "title": "Complete Cloud Computing Lab 4",
+      "description": "Implement Node.js REST API with MySQL connection",
+      "due_date": "2026-11-05",
+      "priority": "High",
+      "status": "Completed",
+      "created_at": "2026-10-24T08:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "student_id": 1,
+      "title": "Database Normalization Assignment",
+      "description": "Submit 3NF and BCNF case study reports",
+      "due_date": "2026-11-10",
+      "priority": "Medium",
+      "status": "Pending",
+      "created_at": "2026-10-24T09:00:00.000Z"
+    },
+    {
+      "id": 3,
+      "student_id": 2,
+      "title": "Machine Learning Model Training",
+      "description": "Train CNN for image classification benchmark",
+      "due_date": "2026-11-08",
+      "priority": "High",
+      "status": "Completed",
+      "created_at": "2026-10-24T10:00:00.000Z"
+    },
+    {
+      "id": 4,
+      "student_id": 3,
+      "title": "Data Structures Problem Set",
+      "description": "Solve dynamic programming problem set for placement prep",
+      "due_date": "2026-11-12",
+      "priority": "Medium",
+      "status": "Pending",
+      "created_at": "2026-10-25T11:00:00.000Z"
+    },
+    {
+      "id": 5,
+      "student_id": 1,
+      "title": "Compiler Design Lab 3",
+      "description": "",
+      "due_date": null,
+      "priority": "High",
+      "status": "Pending",
+      "created_at": "2026-10-26T04:39:20.257Z"
+    }
+  ]
+}
