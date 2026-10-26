@@ -37,7 +37,7 @@ let dbMode = 'uninitialized';
 let pool = null;
 
 // Embedded local store fallback (ensures 100% uptime when MySQL server is offline)
-const DATA_DIR = path.join(__dirname, 'data');
+const DATA_DIR = process.env.VERCEL ? path.join('/tmp', 'data') : path.join(__dirname, 'data');
 const LOCAL_DB_FILE = path.join(DATA_DIR, 'db.json');
 
 const initialLocalData = {
@@ -692,13 +692,21 @@ app.use((req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Start Server after Database Initialization
-initDatabase().finally(() => {
-  app.listen(PORT, () => {
-    console.log(`=======================================================`);
-    console.log(`🚀 Student Management System Server running on:`);
-    console.log(`   http://localhost:${PORT}`);
-    console.log(`   Database Mode: [${dbMode.toUpperCase()}]`);
-    console.log(`=======================================================`);
+// Export app for Vercel Serverless Function
+module.exports = app;
+
+// Standalone Server Listener (for local development & standard Node hosts)
+if (!process.env.VERCEL) {
+  initDatabase().finally(() => {
+    app.listen(PORT, () => {
+      console.log(`=======================================================`);
+      console.log(`🚀 Student Management System Server running on:`);
+      console.log(`   http://localhost:${PORT}`);
+      console.log(`   Database Mode: [${dbMode.toUpperCase()}]`);
+      console.log(`=======================================================`);
+    });
   });
-});
+} else {
+  // On Vercel, initialize DB immediately in background
+  initDatabase().catch(err => console.error('DB init warning on Vercel:', err));
+}

@@ -3,12 +3,14 @@
 [![Node.js Version](https://img.shields.io/badge/Node.js-v18%2B%20%7C%20v22-green.svg?logo=nodedotjs)](https://nodejs.org/)
 [![Express.js](https://img.shields.io/badge/Express.js-4.21.x-blue.svg?logo=express)](https://expressjs.com/)
 [![MySQL2](https://img.shields.io/badge/Database-MySQL2-orange.svg?logo=mysql)](https://www.mysql.com/)
+[![Vercel Deployment](https://img.shields.io/badge/Deployed-Vercel-black.svg?logo=vercel)](https://vercel.com/)
 [![Frontend](https://img.shields.io/badge/Frontend-HTML5%20%7C%20Vanilla%20CSS3%20%7C%20ES6+-yellow.svg)](https://developer.mozilla.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-purple.svg)](LICENSE)
 
 > **Sri Sai Ram Engineering College, Chennai - 600 044**  
 > *Laboratory Project: Full-Stack Web Application (Node.js + Express + MySQL)*  
-> *Motto: Manage • Track • Build Future*
+> *Motto: Manage • Track • Build Future*  
+> 🚀 **Live Demo on Vercel**: Ready for 1-click deployment and preview!
 
 ---
 
